@@ -170,10 +170,11 @@ main,.ft{position:relative;z-index:1}
 .kz-c:nth-of-type(2){transition-delay:.25s}.kz-c:nth-of-type(3){transition-delay:.35s}.kz-c:nth-of-type(4){transition-delay:.45s}.kz-c:nth-of-type(5){transition-delay:.55s}.kz-c:nth-of-type(6){transition-delay:.65s}.kz-c:nth-of-type(7){transition-delay:.75s}.kz-c:nth-of-type(8){transition-delay:.85s}
 .fx{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(10px,1.2vw,18px)}
 .fx-i{min-height:clamp(150px,15vw,220px);padding:clamp(18px,2vw,30px);border:1px solid var(--line2);border-radius:var(--r);background:linear-gradient(160deg,rgba(40,48,49,.72),rgba(28,34,35,.5));display:flex;flex-direction:column;justify-content:space-between;gap:20px}
-.fx-i b{font-weight:300;font-size:clamp(26px,2.7vw,46px);line-height:1;letter-spacing:.02em;text-transform:uppercase;white-space:nowrap}
+.fx-i{container-type:inline-size}
+.fx-i b{font-weight:300;font-size:clamp(24px,10.5cqi,46px);line-height:1.05;letter-spacing:.02em;text-transform:uppercase;text-wrap:balance;overflow-wrap:break-word}
 .fx-i span{color:var(--mute);font-size:clamp(13.5px,1.05vw,16px);line-height:1.45}
 @media (max-width:900px){.facts-in{grid-template-columns:minmax(0,1fr)}.kz-box{order:0}}
-@media (max-width:520px){.kz-c text{font-size:13px}.fx-i{min-height:136px;padding:16px}.fx-i b{font-size:25px;white-space:normal}}
+@media (max-width:520px){.kz-c text{font-size:13px}.fx-i{min-height:136px;padding:16px}.fx-i b{font-size:clamp(22px,11cqi,30px)}}
 
 /* секции */
 .sec{position:relative;padding:clamp(72px,9vw,160px) 0}
