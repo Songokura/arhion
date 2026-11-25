@@ -41,7 +41,7 @@
   $$('[data-i18n-alt]').forEach(function (el) { RU[el.getAttribute('data-i18n-alt')] = el.getAttribute('alt'); });
   $$('[data-i18n-aria]').forEach(function (el) { RU[el.getAttribute('data-i18n-aria')] = el.getAttribute('aria-label'); });
   var RUWA = w.SITE_RU_WA || {}; for (var k in RUWA) RU[k] = RUWA[k];
-  var RUX = { 'st.concept': 'Концепция', 'st.agreed': 'Концепция согласована', 'st.built': 'Объект построен', 'ar.read': 'Читать', 'pf.similar': 'Обсудить похожий проект' };
+  var RUX = { 'st.concept': 'Концепция', 'st.agreed': 'Концепция согласована', 'st.built': 'Концепция бюро, объект построен', 'ar.read': 'Читать', 'pf.similar': 'Обсудить похожий проект' };
   for (k in RUX) if (!(k in RU)) RU[k] = RUX[k];
   function dict() { return lang === 'ru' ? RU : (w['SITE_' + lang.toUpperCase()] || RU); }
   function tr(key) { var v = dict()[key]; return v == null ? (RU[key] || '') : v; }
@@ -85,7 +85,8 @@
     });
     $$('[data-words]').forEach(function (el) {
       var s = new SplitText(el, { type: 'words', wordsClass: 'w', aria: 'none' });
-      var tw = gsap.to(s.words, { opacity: 1, ease: 'none', stagger: 0.5, scrollTrigger: { trigger: el, start: 'top 82%', end: 'bottom 48%', scrub: 0.6 } });
+      /* слова проявляются сами за ~1.5 с, как только абзац показался - не ждут прокрутки */
+      var tw = gsap.to(s.words, { opacity: 1, ease: 'power1.out', duration: 0.5, stagger: 0.025, scrollTrigger: { trigger: el, start: 'top 85%', once: true } });
       var rv = s.revert.bind(s);
       s.revert = function () { if (tw.scrollTrigger) tw.scrollTrigger.kill(); tw.kill(); rv(); };
       splits.push(s);
@@ -431,6 +432,38 @@
     sheet(SH.ar).then(function (rows) { arRows = rows; arDraw(); }).catch(function () {});
     onLang.push(arDraw);
   }
+
+  /* ---------- переходы между разделами: занавес и сборка логотипа ---------- */
+  (function () {
+    if (RM) return;
+    var leave = function (href) {
+      try { sessionStorage.setItem('arh-pt', '1'); } catch (e) {}
+      root.classList.remove('pt-on', 'pt-out');
+      root.classList.add('pt-go');
+      setTimeout(function () { location.href = href; }, 820);
+    };
+    d.addEventListener('click', function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest && e.target.closest('a[href]'); if (!a) return;
+      var raw = a.getAttribute('href');
+      if (!raw || raw.charAt(0) === '#' || a.target === '_blank' || a.hasAttribute('download') || /^(tel|mailto|https?:\/\/(wa\.me|t\.me))/.test(raw)) return;
+      var u; try { u = new URL(a.href, location.href); } catch (er) { return; }
+      if (u.origin !== location.origin) return;
+      if (u.pathname === location.pathname && u.search === location.search) return; /* та же страница - якорь обработан выше */
+      e.preventDefault(); closeMenu(); leave(u.href);
+    });
+    if (root.classList.contains('pt-on')) {
+      var done = function () {
+        if (root.classList.contains('pt-out')) return;
+        root.classList.add('pt-out');
+        setTimeout(function () { root.classList.remove('pt-on', 'pt-out'); }, 1300);
+      };
+      var hi = $('.hero-img img');
+      if (hi && !hi.complete) { hi.addEventListener('load', function () { setTimeout(done, 120); }); hi.addEventListener('error', done); setTimeout(done, 900); }
+      else setTimeout(done, 260);
+    }
+    w.addEventListener('pageshow', function (ev) { if (ev.persisted) root.classList.remove('pt-go', 'pt-on', 'pt-out'); });
+  })();
 
   /* ---------- запуск ---------- */
   reveals();
