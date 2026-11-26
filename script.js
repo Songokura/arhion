@@ -37,7 +37,14 @@
 
   /* ---------- языки: словарь своей страницы ---------- */
   var RU = {};
-  $$('[data-i18n]').forEach(function (el) { RU[el.getAttribute('data-i18n')] = el.textContent; });
+  /* выделение зелёным: в словарях *фраза*, в разметке <em class="hl"> */
+  var hlText = function (el) { var o = ''; el.childNodes.forEach(function (n) { o += (n.nodeType === 1 && n.classList.contains('hl')) ? '*' + n.textContent + '*' : n.textContent; }); return o; };
+  var hlSet = function (el, v) {
+    if (v.indexOf('*') < 0) { el.textContent = v; return; }
+    el.textContent = '';
+    v.split('*').forEach(function (part, i) { if (!part) return; if (i % 2) { var m = d.createElement('em'); m.className = 'hl'; m.textContent = part; el.appendChild(m); } else el.appendChild(d.createTextNode(part)); });
+  };
+  $$('[data-i18n]').forEach(function (el) { RU[el.getAttribute('data-i18n')] = hlText(el); });
   $$('[data-i18n-alt]').forEach(function (el) { RU[el.getAttribute('data-i18n-alt')] = el.getAttribute('alt'); });
   $$('[data-i18n-aria]').forEach(function (el) { RU[el.getAttribute('data-i18n-aria')] = el.getAttribute('aria-label'); });
   var RUWA = w.SITE_RU_WA || {}; for (var k in RUWA) RU[k] = RUWA[k];
@@ -48,7 +55,7 @@
   function waUrl(text) { return 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(text); }
   function applyLang() {
     unsplit();
-    $$('[data-i18n]').forEach(function (el) { el.textContent = tr(el.getAttribute('data-i18n')); });
+    $$('[data-i18n]').forEach(function (el) { hlSet(el, tr(el.getAttribute('data-i18n'))); });
     $$('[data-i18n-alt]').forEach(function (el) { el.setAttribute('alt', tr(el.getAttribute('data-i18n-alt'))); });
     $$('[data-i18n-aria]').forEach(function (el) { el.setAttribute('aria-label', tr(el.getAttribute('data-i18n-aria'))); });
     $$('[data-wa]').forEach(function (el) { el.href = waUrl(tr(el.getAttribute('data-wa'))); });
