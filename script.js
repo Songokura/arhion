@@ -440,8 +440,19 @@
       try { sessionStorage.setItem('arh-pt', '1'); } catch (e) {}
       root.classList.remove('pt-on', 'pt-out');
       root.classList.add('pt-go');
-      setTimeout(function () { location.href = href; }, 820);
+      setTimeout(function () { location.href = href; }, 480);
     };
+    /* страница начинает грузиться заранее: при наведении или касании ссылки */
+    var pf = {};
+    var prefetch = function (e) {
+      var a = e.target.closest && e.target.closest('a[href]'); if (!a || a.target === '_blank') return;
+      var u; try { u = new URL(a.href, location.href); } catch (er) { return; }
+      if (u.origin !== location.origin || u.pathname === location.pathname || pf[u.href]) return;
+      pf[u.href] = 1;
+      var l = d.createElement('link'); l.rel = 'prefetch'; l.href = u.href; d.head.appendChild(l);
+    };
+    d.addEventListener('mouseover', prefetch, { passive: true });
+    d.addEventListener('touchstart', prefetch, { passive: true });
     d.addEventListener('click', function (e) {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       var a = e.target.closest && e.target.closest('a[href]'); if (!a) return;
@@ -456,11 +467,11 @@
       var done = function () {
         if (root.classList.contains('pt-out')) return;
         root.classList.add('pt-out');
-        setTimeout(function () { root.classList.remove('pt-on', 'pt-out'); }, 1300);
+        setTimeout(function () { root.classList.remove('pt-on', 'pt-out'); }, 850);
       };
       var hi = $('.hero-img img');
-      if (hi && !hi.complete) { hi.addEventListener('load', function () { setTimeout(done, 120); }); hi.addEventListener('error', done); setTimeout(done, 900); }
-      else setTimeout(done, 260);
+      if (hi && !hi.complete) { hi.addEventListener('load', function () { setTimeout(done, 40); }); hi.addEventListener('error', done); setTimeout(done, 500); }
+      else setTimeout(done, 60);
     }
     w.addEventListener('pageshow', function (ev) { if (ev.persisted) root.classList.remove('pt-go', 'pt-on', 'pt-out'); });
   })();

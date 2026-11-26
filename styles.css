@@ -629,21 +629,21 @@ main,.ft{position:relative;z-index:1}
 .pt-line{display:block;width:clamp(120px,12vw,190px);height:1px;background:rgba(233,236,234,.18);overflow:hidden;position:relative}
 .pt-line::after{content:"";position:absolute;inset:0;background:var(--acc);transform:scaleX(0);transform-origin:left}
 /* уход со страницы: занавес снизу вверх, знак собирается */
-html.pt-go .pt{visibility:visible;clip-path:inset(0 0 0 0);transition:clip-path .62s cubic-bezier(.76,0,.24,1)}
-html.pt-go .pt-p{opacity:1;transform:none;transition:opacity .45s var(--ease),transform .6s cubic-bezier(.2,.9,.25,1)}
-html.pt-go .pt-w1{transition-delay:.2s}html.pt-go .pt-w2{transition-delay:.28s}html.pt-go .pt-g1{transition-delay:.36s}html.pt-go .pt-g2{transition-delay:.42s}
-html.pt-go .pt-word{opacity:1;transform:none;transition:opacity .5s var(--ease) .45s,transform .6s var(--ease) .45s}
-html.pt-go .pt-line::after{transform:scaleX(.6);transition:transform .7s var(--ease) .35s}
+html.pt-go .pt{visibility:visible;clip-path:inset(0 0 0 0);transition:clip-path .45s cubic-bezier(.76,0,.24,1)}
+html.pt-go .pt-p{opacity:1;transform:none;transition:opacity .32s var(--ease),transform .42s cubic-bezier(.2,.9,.25,1)}
+html.pt-go .pt-w1{transition-delay:.1s}html.pt-go .pt-w2{transition-delay:.15s}html.pt-go .pt-g1{transition-delay:.2s}html.pt-go .pt-g2{transition-delay:.24s}
+html.pt-go .pt-word{opacity:1;transform:none;transition:opacity .35s var(--ease) .25s,transform .4s var(--ease) .25s}
+html.pt-go .pt-line::after{transform:scaleX(.6);transition:transform .45s var(--ease) .2s}
 /* приход на страницу: знак стоит собранным, затем уходит, занавес поднимается */
 html.pt-on .pt{visibility:visible;clip-path:inset(0 0 0 0)}
 html.pt-on .pt-p{opacity:1;transform:none}
 html.pt-on .pt-word{opacity:1;transform:none}
 html.pt-on .pt-line::after{transform:scaleX(.6)}
-html.pt-on.pt-out .pt-line::after{transform:scaleX(1);transition:transform .35s var(--ease)}
-html.pt-on.pt-out .pt-p{opacity:0;transform:translateY(-38%);transition:opacity .4s var(--ease),transform .55s cubic-bezier(.5,0,.75,0)}
-html.pt-on.pt-out .pt-w1{transition-delay:.18s}html.pt-on.pt-out .pt-w2{transition-delay:.12s}html.pt-on.pt-out .pt-g1{transition-delay:.24s}html.pt-on.pt-out .pt-g2{transition-delay:.06s}
-html.pt-on.pt-out .pt-word{opacity:0;transform:translateY(-8px);transition:opacity .3s var(--ease) .1s,transform .4s var(--ease) .1s}
-html.pt-on.pt-out .pt{clip-path:inset(0 0 100% 0);transition:clip-path .75s cubic-bezier(.76,0,.24,1) .42s}
+html.pt-on.pt-out .pt-line::after{transform:scaleX(1);transition:transform .25s var(--ease)}
+html.pt-on.pt-out .pt-p{opacity:0;transform:translateY(-38%);transition:opacity .3s var(--ease),transform .4s cubic-bezier(.5,0,.75,0)}
+html.pt-on.pt-out .pt-w1{transition-delay:.1s}html.pt-on.pt-out .pt-w2{transition-delay:.07s}html.pt-on.pt-out .pt-g1{transition-delay:.13s}html.pt-on.pt-out .pt-g2{transition-delay:.03s}
+html.pt-on.pt-out .pt-word{opacity:0;transform:translateY(-8px);transition:opacity .25s var(--ease) .05s,transform .3s var(--ease) .05s}
+html.pt-on.pt-out .pt{clip-path:inset(0 0 100% 0);transition:clip-path .55s cubic-bezier(.76,0,.24,1) .22s}
 @media (prefers-reduced-motion:reduce){.pt{display:none}}
 
 @media (max-width:767px){.hero-btns .btn{white-space:normal;text-align:center;line-height:1.2;padding:8px 10px}}
